@@ -10,11 +10,13 @@ import Table from '../components/common/Table';
 import Badge from '../components/common/Badge';
 import Avatar from '../components/common/Avatar';
 
+const emptyForm = { id: null, name: '', phone: '', salary: '' };
+
 const Guards = () => {
   const { user, token } = useAuth();
   const [guards, setGuards] = useState([]);
   const [showModal, setShowModal] = useState(false);
-  const [formData, setFormData] = useState({ name: '', phone: '', salary: '' });
+  const [formData, setFormData] = useState(emptyForm);
 
   const loadGuards = async () => {
     if (!token) return;
@@ -26,13 +28,23 @@ const Guards = () => {
 
   useEffect(() => { loadGuards(); }, [token]);
 
+  const openCreate = () => { setFormData(emptyForm); setShowModal(true); };
+  const openEdit = (g) => {
+    setFormData({ id: g.id || g._id, name: g.name, phone: g.phone, salary: g.salary || '' });
+    setShowModal(true);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await guardsApi.create(token, formData);
+      if (formData.id) {
+        await guardsApi.update(token, formData.id, formData);
+      } else {
+        await guardsApi.create(token, formData);
+      }
       await loadGuards();
       setShowModal(false);
-      setFormData({ name: '', phone: '', salary: '' });
+      setFormData(emptyForm);
     } catch (err) { alert(err.message); }
   };
 
@@ -53,7 +65,7 @@ const Guards = () => {
     {
       header: 'Actions', render: (row) => (
         <div className="flex gap-2">
-          <Button size="sm" variant="secondary" icon={Edit2} />
+          <Button size="sm" variant="secondary" icon={Edit2} onClick={() => openEdit(row)} />
           {hasPermission(user.role, 'delete') && <Button size="sm" variant="danger" icon={Trash2} onClick={() => handleDelete(row.id || row._id)} />}
         </div>
       )
@@ -67,17 +79,17 @@ const Guards = () => {
           <h1 className="text-3xl font-extrabold text-secondary-900">Guard Management</h1>
           <p className="text-sm text-secondary-500 mt-2">Manage security personnel</p>
         </div>
-        {hasPermission(user.role, 'create') && <Button icon={Plus} onClick={() => setShowModal(true)}>Add Guard</Button>}
+        {hasPermission(user.role, 'create') && <Button icon={Plus} onClick={openCreate}>Add Guard</Button>}
       </div>
       <div className="bg-white border border-secondary-200 rounded-2xl shadow-sm overflow-hidden">
         <Table columns={columns} data={guards} emptyMessage="No guards yet" />
       </div>
-      <Modal isOpen={showModal} onClose={() => setShowModal(false)} title="Add New Guard">
+      <Modal isOpen={showModal} onClose={() => setShowModal(false)} title={formData.id ? 'Edit Guard' : 'Add New Guard'}>
         <form onSubmit={handleSubmit} className="space-y-5">
           <Input label="Full Name" value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} required />
           <Input label="Phone" type="tel" value={formData.phone} onChange={(e) => setFormData({ ...formData, phone: e.target.value })} required />
           <Input label="Salary" type="number" min="0" value={formData.salary} onChange={(e) => setFormData({ ...formData, salary: e.target.value })} required />
-          <Button type="submit" fullWidth>Add Guard</Button>
+          <Button type="submit" fullWidth>{formData.id ? 'Update Guard' : 'Add Guard'}</Button>
         </form>
       </Modal>
     </div>
