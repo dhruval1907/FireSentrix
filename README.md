@@ -1,215 +1,187 @@
-# 🔥 Fire & Security Management System
+# 🔥 FireSentrix – Fire & Security Management System
 
-### Role-Based Security Operations Dashboard Built with React and LocalStorage
+### A Full Stack Security Operations Platform for Managing Guards, Clients, Equipment, Attendance, and Communication
 
-The **Fire & Security Management System** is a frontend-only web application designed to manage security operations efficiently.
-It allows administrators and staff to manage guards, clients, equipment, attendance, and salaries while providing role-based access control and a local chat system.
+**FireSentrix** is a full-stack security management platform designed to streamline operations for security companies and facility managers.
+The system enables administrators to manage security personnel, track attendance, monitor equipment, handle invoices, and facilitate internal communication.
 
-This project is built entirely with **React + Vite + Tailwind CSS** and runs **without any backend or API**. All application data is stored and managed using **LocalStorage**, making the system fast and easy to deploy.
+The application is built with a **modern MERN-style architecture**, featuring a structured backend with controllers, models, middleware, and REST APIs.
 
 ---
 
-# 🚀 What This Project Can Do
+# 🚀 Core Features
 
-* Secure user authentication system
-* Role-based access control (Admin, Staff, Maintenance)
-* Manage security guards and clients
-* Track equipment and maintenance schedules
+### 🔐 Authentication & Authorization
+
+* Secure user authentication
+* Role-based access control
+* Protected API routes
+* JWT-based session handling
+
+---
+
+### 👮 Guard Management
+
+* Add and manage security guards
+* Update guard details
+* Assign guards to sites
+* Track guard status
+
+---
+
+### 🏢 Client Management
+
+* Add client companies
+* Manage client contact details
+* Link clients with security sites
+* Maintain service records
+
+---
+
+### 📍 Site Management
+
+* Manage security deployment locations
+* Assign guards to sites
+* Track operational details
+
+---
+
+### 🛠 Equipment Management
+
+* Add security equipment
+* Track equipment assignments
+* Monitor maintenance status
+
+---
+
+### 📅 Attendance System
+
 * Record guard attendance
-* Generate and manage salary records
-* Local chat system between users
-* Fully functional CRUD operations
-* Fast performance with no backend dependency
+* Track attendance per site
+* Generate attendance logs
 
 ---
 
-# ✨ Key Features
+### 💰 Salary Management
 
-## Authentication System
-
-* Signup and Login functionality
-* User data stored in LocalStorage
-* Logged-in user stored as `currentUser`
-* Protected routes for secure access
-
-User structure stored in LocalStorage:
-
-```
-{
-  id,
-  name,
-  email,
-  password,
-  role
-}
-```
-
----
-
-# 👥 Role-Based Access Control
-
-| Role             | Permissions                             |
-| ---------------- | --------------------------------------- |
-| Admin            | Full access to all modules              |
-| Staff            | Cannot delete users                     |
-| Maintenance Team | Access only to equipment and attendance |
-
----
-
-# 📦 System Modules
-
-## Clients Management
-
-* Add new clients
-* Edit client information
-* Delete clients
-
-Stored under LocalStorage key:
-
-```
-clients
-```
-
----
-
-## Guards Management
-
-* Add guards
-* Edit guard information
-* Delete guards
-
-Stored under:
-
-```
-guards
-```
-
----
-
-## Equipment Management
-
-* Add equipment
-* Update equipment details
-* Delete equipment
-* Detect overdue maintenance automatically
-
-Stored under:
-
-```
-equipment
-```
-
----
-
-## Attendance System
-
-* Mark guards as present or absent
-* Attendance tracked by date
-
-Stored under:
-
-```
-attendance
-```
-
----
-
-## Salary Management
-
+* Calculate guard salaries
 * Generate salary records
-* Mark salaries as paid
-
-Stored under:
-
-```
-salaries
-```
+* Payment status tracking
 
 ---
 
-# 💬 Local Chat System
+### 🧾 Invoice Management
 
-The application includes a simulated real-time chat system where users can communicate with each other.
+* Generate invoices for clients
+* Track payment records
+* Maintain billing history
 
-Message structure:
+---
+
+### 💬 Internal Messaging System
+
+* Send messages between users
+* Maintain communication logs
+* Secure internal communication
+
+---
+
+# 🏗 Backend Architecture
+
+The backend follows a **modular MVC-style architecture** to maintain scalability and code organization.
 
 ```
-{
-  id,
-  senderId,
-  receiverId,
-  message,
-  timestamp
-}
-```
-
-Stored under:
-
-```
-messages
+backend
+│
+├── config
+│
+├── controllers
+│   ├── attendanceController.js
+│   ├── authController.js
+│   ├── clientController.js
+│   ├── equipmentController.js
+│   ├── guardController.js
+│   ├── invoiceController.js
+│   ├── messageController.js
+│   ├── salaryController.js
+│   └── siteController.js
+│
+├── middleware
+│   ├── auth.js
+│   ├── errorHandler.js
+│   └── validate.js
+│
+├── models
+│   ├── Attendance.js
+│   ├── Client.js
+│   ├── Equipment.js
+│   ├── Guard.js
+│   ├── Invoice.js
+│   ├── Message.js
+│   ├── Salary.js
+│   ├── Site.js
+│   └── User.js
+│
+├── routes
+│   ├── attendanceRoutes.js
+│   ├── authRoutes.js
+│   ├── clientRoutes.js
+│   ├── equipmentRoutes.js
+│   ├── guardRoutes.js
+│   ├── invoiceRoutes.js
+│   ├── messageRoutes.js
+│   ├── salaryRoutes.js
+│   └── siteRoutes.js
+│
+├── server.js
+└── seed.js
 ```
 
 ---
 
 # 🛠 Tech Stack
 
-Frontend
+### Backend
 
-* React.js
-* Vite
+* Node.js
+* Express.js
 
-Styling
+### Database
 
-* Tailwind CSS
+* MongoDB
+* Mongoose
 
-Routing
+### Authentication
 
-* React Router
+* JWT (JSON Web Token)
 
-State Management
+### API Architecture
 
-* React Context API
+* RESTful APIs
 
-Data Storage
+### Middleware
 
-* LocalStorage
-
----
-
-# 📂 Project Structure
-
-```
-src
-│
-├── components
-├── pages
-├── context
-├── utils
-└── services
-```
-
-The project follows a **clean modular structure** for scalability and maintainability.
+* Custom authentication middleware
+* Validation middleware
+* Error handling middleware
 
 ---
 
-# ⚡ Performance Optimizations
+# ⚙️ Environment Variables
 
-* No backend API calls
-* No Axios usage
-* Optimized React hooks
-* Avoided unnecessary re-renders
-* Correct dependency arrays
-* Efficient LocalStorage data handling
+Create a `.env` file inside the backend folder.
+
+Example:
+
+```
+PORT=5000
+MONGO_URI=your_mongodb_connection_string
+JWT_SECRET=your_secret_key
+```
 
 ---
 
-# ▶️ Running the Project
-
-Clone the repository
-
-```
-git clone https://github.com/yourusername/fire-security-management-system.git
-```
+# ▶️ Running the Backend
 
 Install dependencies
 
@@ -217,23 +189,29 @@ Install dependencies
 npm install
 ```
 
-Start development server
+Start the server
 
 ```
-npm run dev
+npm run start
+```
+
+Server will run on:
+
+```
+http://localhost:5000
 ```
 
 ---
 
 # 🎯 Purpose of the Project
 
-This project demonstrates how to build a **complete role-based management dashboard using only frontend technologies**. It focuses on:
+This project demonstrates how to build a **production-level backend architecture** for a security operations management system, including:
 
-* Local data persistence
-* Clean React architecture
-* Role-based UI control
-* Efficient CRUD operations
-* Fast application performance
+* Modular API architecture
+* Secure authentication
+* Organized controller structure
+* Scalable data models
+* Middleware-based security
 
 ---
 
@@ -241,11 +219,4 @@ This project demonstrates how to build a **complete role-based management dashbo
 
 Your Name
 
-GitHub:
-LinkedIn:
-
----
-
-# 📌 Project Tagline
-
-**A Role-Based Security Operations Dashboard Built with React and LocalStorage**
+GitHub:dhruval1907
